@@ -1,0 +1,13 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "type": "eventGridTrigger",
+      "name": "event",
+      "direction": "in",
+      "eventHubName": "yrod-neighborly", 
+      "connection": "Endpoint=sb://yrod-neighborly.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=uwjqkGFH9vb7ZB1WjPAwtwsGnr4KJhw0uv8fkWhBqSA="
+    }
+  ]
+}
+

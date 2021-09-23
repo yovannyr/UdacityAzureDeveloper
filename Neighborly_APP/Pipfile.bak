@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+flask-restplus = "*"
+flask-swagger-ui = "*"
+azure-functions = "*"
+azure-cosmos = "*"
+pymongo = "*"
+azure-cli-core = "*"
+feedgen = "*"
+certifi = "==2020.4.5.1"
+chardet = "==3.0.4"
+click = "==7.1.2"
+dominate = "==2.5.1"
+idna = "==2.9"
+itsdangerous = "*"
+urllib3 = "*"
+visitor = "*"
+Flask = "==2.0.1"
+Flask-Bootstrap = "*"
+Werkzeug = "==2.0.1"
+Jinja2 = "*"
+MarkupSafe = "*"
+
+[dev-packages]

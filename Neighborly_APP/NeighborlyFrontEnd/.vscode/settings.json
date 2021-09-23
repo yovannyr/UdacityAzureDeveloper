@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/c4132146-dfde-474d-ba2f-4310b9bb228c/resourceGroups/neighborly_rg/providers/Microsoft.Web/sites/yrod-neighborlywebapp",
+    "appService.deploySubpath": "."
+}
