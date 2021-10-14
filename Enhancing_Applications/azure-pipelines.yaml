@@ -49,4 +49,3 @@ stages:
                 mv /home/udacityadmin/azagent/_work/1/drop-azurevote/$(Build.BuildId)-azurevote.zip app
                 cd app
                 unzip -o $(Build.BuildId)-azurevote.zip
-                

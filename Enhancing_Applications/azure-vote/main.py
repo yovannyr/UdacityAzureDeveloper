@@ -21,30 +21,33 @@ from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
-app = Flask(__name__)
 
-# Requests
-middleware = FlaskMiddleware(
-    app,
-    exporter=AzureExporter(connection_string='InstrumentationKey=a830027f-3b39-4371-8877-8ee0c3050e58'),
-    sampler=ProbabilitySampler(rate=1.0),
-)
 # TODO: Setup flask middleware
 
 # Logging
 logger = logging.getLogger(__name__)
-logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=a830027f-3b39-4371-8877-8ee0c3050e58'))
+logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=c1f424ba-f34f-4dd4-812d-41cd1305507b'))
 
 # Metrics TODO: Setup exporter
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics=True,
-    connection_string='InstrumentationKey=a830027f-3b39-4371-8877-8ee0c3050e58'
+    connection_string='InstrumentationKey=c1f424ba-f34f-4dd4-812d-41cd1305507b'
 )
 # Tracing
 tracer = Tracer(
     exporter = AzureExporter(
-        connection_string = 'InstrumentationKey=a830027f-3b39-4371-8877-8ee0c3050e58'),
+        connection_string = 'InstrumentationKey=c1f424ba-f34f-4dd4-812d-41cd1305507b'),
     sampler = ProbabilitySampler(1.0),
+)
+
+app = Flask(__name__)
+
+# Requests
+# Setup flask middleware
+middleware = FlaskMiddleware(
+    app,
+    exporter=AzureExporter(connection_string='InstrumentationKey=c1f424ba-f34f-4dd4-812d-41cd1305507b'),
+    sampler=ProbabilitySampler(rate=1.0),
 )
 
 # Load configurations from environment or config file
@@ -65,8 +68,21 @@ if ("TITLE" in os.environ and os.environ['TITLE']):
 else:
     title = app.config['TITLE']
 
-# Redis Connection
-r = redis.Redis()
+# r = redis.Redis()
+# Redis configurations
+redis_server = os.environ['REDIS']
+
+# Redis Connection to another container
+try:
+    if "REDIS_PWD" in os.environ:
+        r = redis.StrictRedis(host=redis_server,
+                           port=6379,
+                           password=os.environ['REDIS_PWD'])
+    else:
+         r = redis.Redis(redis_server)
+    r.ping()
+except redis.ConnectionError:
+    exit('Failed to connect to Redis, terminating.')
 
 # Change title to host name to demo NLB
 if app.config['SHOWHOST'] == "true":
@@ -127,6 +143,6 @@ def index():
 
 if __name__ == "__main__":
     # comment line below when deploying to VMSS
-    #app.run() # local
+    # app.run() # local
     # uncomment the line below before deployment to VMSS
     app.run(host='0.0.0.0', threaded=True, debug=True) # remote
